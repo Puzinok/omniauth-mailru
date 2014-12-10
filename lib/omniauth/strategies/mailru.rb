@@ -83,7 +83,7 @@ module OmniAuth
 
       def calc_signature(hash)
         raw = hash.map{|key, value| [key, value].join('=')}.sort.join
-        raw = [uid, raw, options.client_secret].join
+        raw = [uid, raw, options.private_key].join
         Digest::MD5.hexdigest(raw)
       end
 
