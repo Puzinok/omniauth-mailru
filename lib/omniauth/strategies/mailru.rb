@@ -73,17 +73,18 @@ module OmniAuth
             :method => 'users.getInfo',
             :app_id => options.client_id,
             :session_key => access_token.token,
-            :format => "json"
+            :secure => '1',
+            :format => 'json'
           }
           params[:sig] = calc_signature(params)
-          result = access_token.get('http://appsmail.ru/platform/api', :params => params).parsed.first
+          result = access_token.get('https://appsmail.ru/platform/api', :params => params).parsed.first
           result
         end
       end
 
       def calc_signature(hash)
         raw = hash.map{|key, value| [key, value].join('=')}.sort.join
-        raw = [uid, raw, options.private_key].join
+        raw = [raw, options.client_secret].join
         Digest::MD5.hexdigest(raw)
       end
 
